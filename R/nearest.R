@@ -82,8 +82,8 @@ nearest_api_v4 <- function(lat, lng, address) {
 #' @return A data.frame with lat and lng
 
 #' @examples
-#' osrmr:::nearest_api_v5(47,9, osrmr:::server_address(FALSE))
 #' \dontrun{
+#' osrmr:::nearest_api_v5(47,9, osrmr:::server_address(FALSE))
 #' Sys.setenv("OSRM_PATH_API_5"="C:/OSRM_API5")
 #' osrmr::run_server(Sys.getenv("OSRM_PATH_API_5"), "switzerland-latest.osrm")
 #' osrmr:::nearest_api_v5(47,9, osrmr:::server_address(TRUE))

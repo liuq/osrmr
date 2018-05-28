@@ -4,6 +4,10 @@
 #' your OS). A local (pre-built) version of the OSRM-engine must be on your device.
 #' (https://github.com/Project-OSRM/osrm-backend/wiki/Building-OSRM).
 #'
+#' To start the server, it is necessary to know its location. If it was installed
+#' in C:/OSRM_APIx, it is easiest to set an environment variable which points to
+#' the folder via Sys.setenv(). Note: You need to set the variable in each session.
+#'
 #' @param map_name A character (name of your pre-built map - e.g. "switzerland-latest.osrm")
 #' @param osrm_path A string pointing to your local OSRM installation. Default is the environment variable "OSRM_PATH".
 #'

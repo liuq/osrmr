@@ -30,11 +30,11 @@ The coordinate-standard is WGS84.
 Attention: The OSRM API-4 is only working locally, but not with the onlinehost.
 }
 \examples{
+\dontrun{
 # example with onlinehost
 osrmr:::viaroute_api_v5(47, 9, 48, 10 , FALSE, osrmr:::server_address(FALSE))
 
 # example with localhost
-\dontrun{
 Sys.setenv("OSRM_PATH"="C:/OSRM_API5")
 osrmr::run_server("switzerland-latest.osrm")
 osrmr:::viaroute_api_v5(47, 9, 48, 10 , FALSE, osrmr:::server_address(TRUE))

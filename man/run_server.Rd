@@ -19,6 +19,11 @@ run_server() starts your local OSRM server by using a shell command (depending o
 your OS). A local (pre-built) version of the OSRM-engine must be on your device.
 (https://github.com/Project-OSRM/osrm-backend/wiki/Building-OSRM).
 }
+\details{
+To start the server, it is necessary to know its location. If it was installed
+in C:/OSRM_APIx, it is easiest to set an environment variable which points to
+the folder via Sys.setenv(). Note: You need to set the variable in each session.
+}
 \examples{
 \dontrun{
 Sys.setenv("OSRM_PATH"="C:/OSRM_API4")

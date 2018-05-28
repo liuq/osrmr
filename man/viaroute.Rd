@@ -33,14 +33,14 @@ Attention: The OSRM API-4 is only working locally, but not with the onlinehost.
 }
 \examples{
 # direct examples of the online API
-link <- "http://router.project-osrm.org/route/v1/driving/8.1,47.1;8.3,46.9?steps=false"
+\dontrun{
+#' link <- "http://router.project-osrm.org/route/v1/driving/8.1,47.1;8.3,46.9?steps=false"
 a <- rjson::fromJSON(file = link)
 
 # example with onlinehost API5
 osrmr:::viaroute(47.1, 8.1, 46.9, 8.3, FALSE, 5, FALSE)
 
 # examples with localhost API4/API5
-\dontrun{
 Sys.setenv("OSRM_PATH"="C:/OSRM_API4")
 osrmr::run_server("switzerland-latest.osrm")
 osrmr::viaroute(47.1, 8.1, 46.9, 8.3, FALSE, 4, TRUE)
