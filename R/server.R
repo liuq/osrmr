@@ -81,3 +81,39 @@ server_address <- function(use_localhost) {
   return(address)
 }
 
+
+#' Run one server request for OSRM (online- or localhost)
+#'
+#' In order to fail gracefully, this function handles errors and warnings if the asked
+#' server (online- or localhost) doesn't work properly. In this case the error message is
+#' returned and connections are closed using base::closeAllConnections().
+#'
+#' If the asked server doesn't react within 1 second, a warning is thrown using
+#' R.utils::withTimeout(..., timeout = 1)
+#'
+#' @param request A character
+#'
+#' @return A list. The dimension of the list depends on the request and wether the server reacted
+#' properly or not.
+make_request <- function(request) {
+  R.utils::withTimeout({
+    res <- tryCatch(
+      {
+        rjson::fromJSON(file = request)
+      },
+      error = function(cond) {
+        message("Error:  OSRM Server doesn't react. All connections closed manually")
+        closeAllConnections()
+        stop(cond)
+      },
+      warning = function(cond) {
+        message("Warning: OSRM Server doesn't react. All connections closed manually")
+        closeAllConnections()
+        stop(cond)
+      }
+    )},
+    timeout = 1, onTimeout = "warning")
+  return(res)
+}
+
+

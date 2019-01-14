@@ -4,7 +4,7 @@
 \alias{nearest}
 \title{nearest accessible position}
 \usage{
-nearest(lat, lng, api_version = 5, localhost = F)
+nearest(lat, lng, api_version = 5, localhost = F, timeout = 0.001)
 }
 \arguments{
 \item{lat, }{A numeric (-90 < lat < 90)}
@@ -14,6 +14,8 @@ nearest(lat, lng, api_version = 5, localhost = F)
 \item{api_version, }{A numeric (either 4 or 5)}
 
 \item{localhost, }{A logical (TRUE = localhost is used, FALSE = onlinehost is used)}
+
+\item{timeout}{A numeric indicating the timeout between server requests (in order to prevent queue overflows). Default is 0.001s.}
 }
 \value{
 A data.frame with lat and lng

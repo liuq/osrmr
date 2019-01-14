@@ -13,6 +13,7 @@
 #'  If TRUE, more details of the route are returned (as list).
 #' @param api_version A numeric (either 4 or 5)
 #' @param localhost A logical (TRUE = localhost is used, FALSE = onlinehost is used)
+#' @param timeout A numeric indicating the timeout between server requests (in order to prevent queue overflows). Default is 0.001s.
 #'
 #' @return a numeric or a list (depending on instructions)
 #' @export
@@ -38,15 +39,17 @@
 #' osrmr::viaroute(47.1, 8.1, 46.9, 8.3, FALSE, 5, TRUE)
 #' osrmr::quit_server()
 #' Sys.unsetenv("OSRM_PATH")}
-viaroute <- function(lat1, lng1, lat2, lng2, instructions, api_version, localhost) {
+viaroute <- function(lat1, lng1, lat2, lng2, instructions, api_version, localhost, timeout = 0.001) {
   assertthat::assert_that(api_version %in% c(4,5))
   address <- server_address(localhost)
 
+  Sys.sleep(timeout)
   if (api_version == 4) {
     viaroute_api_v4(lat1, lng1, lat2, lng2, instructions, address)
   } else {
     viaroute_api_v5(lat1, lng1, lat2, lng2, instructions, address)
   }
+
 }
 
 
@@ -75,22 +78,9 @@ viaroute <- function(lat1, lng1, lat2, lng2, instructions, api_version, localhos
 #' osrmr::quit_server()
 #' Sys.unsetenv("OSRM_PATH")}
 viaroute_api_v4 <- function(lat1, lng1, lat2, lng2, instructions, address) {
-  R.utils::withTimeout({
-    repeat{
-      res <- try(
-        route <- rjson::fromJSON(
-          file = paste(address, "/viaroute?loc=",
-                       lat1, ',', lng1, '&loc=', lat2, ',', lng2, sep = "", collapse = NULL)))
-      # Handle error from try:
-      if (class(res) != "try-error") {
-        if (!is.null(res)) {
-          break # waytime found
-        } else {
-          stop("in osrm::viaroute: calculate nearest necessary?")
-        }
-      }
-    }
-  }, timeout = 1, onTimeout = "warning")
+  request <- paste(address, "/viaroute?loc=",
+                   lat1, ',', lng1, '&loc=', lat2, ',', lng2, sep = "", collapse = NULL)
+  res <- make_request(request)
 
   if (!instructions) {
     if (!res$status == 207) {
@@ -146,26 +136,15 @@ viaroute_api_v5 <- function(lat1, lng1, lat2, lng2, instructions, address) {
                      lng1, ",", lat1, ";", lng2, ",", lat2,
                      "?overview=full", sep = "", NULL)
   }
-  R.utils::withTimeout({
-    repeat {
-      res <- try(
-        route <- rjson::fromJSON(
-          file = request))
-      if (class(res) != "try-error") {
-        if (!is.null(res)) {
-          break # waytime found
-        } else {
-          stop("in sim911::osrm_viaroute: calculate nearest necessary?")
-        }
-      }
-    }
-  }, timeout = 1, onTimeout = "warning")
+  res <- make_request(request)
+
   assertthat::assert_that(assertthat::is.number(res$routes[[1]]$duration))
 
   if (!instructions) {
     if (res$code == "Ok") {
       return(res$routes[[1]]$duration)
-    } else {
+    }
+    else {
       t_guess <- 16*60
       warning("Route not found: ", paste(lat1, lng1, lat2, lng2, collapse = ", "),
               ". Travel time set to ", t_guess/60 , " min.")

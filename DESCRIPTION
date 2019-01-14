@@ -1,8 +1,8 @@
 Package: osrmr
 Type: Package
 Title: Wrapper for the 'OSRM' API
-Version: 0.1.29
-Date: 2018-05-28
+Version: 0.1.35
+Date: 2019-01-14
 Author: Adrian Staempfli, Christoph Strauss
 Maintainer: Adrian Staempfli <adrian.staempfli@fhsg.ch>
 Description: Wrapper around the 'Open Source Routing Machine (OSRM)'
@@ -20,6 +20,6 @@ SystemRequirements: To use the Localhost of OSRM, you need to build
         <https://github.com/Project-OSRM/osrm-backend/wiki/Building-OSRM>
         locally
 NeedsCompilation: no
-Packaged: 2018-05-28 09:46:36 UTC; SCN
+Packaged: 2019-01-14 15:01:12 UTC; SCN
 Repository: CRAN
-Date/Publication: 2018-05-28 18:35:32 UTC
+Date/Publication: 2019-01-14 15:30:03 UTC

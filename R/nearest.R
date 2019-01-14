@@ -8,6 +8,7 @@
 #' @param lng, A numeric (-180 < lng < 180)
 #' @param api_version, A numeric (either 4 or 5)
 #' @param localhost, A logical (TRUE = localhost is used, FALSE = onlinehost is used)
+#' @param timeout A numeric indicating the timeout between server requests (in order to prevent queue overflows). Default is 0.001s.
 #'
 #' @return A data.frame with lat and lng
 #' @export
@@ -27,11 +28,11 @@
 #' osrmr::nearest(47,9, 4, TRUE)
 #' osrmr::quit_server()
 #' Sys.unsetenv("OSRM_PATH_API_4")}
-nearest <- function(lat, lng, api_version = 5, localhost = F) {
+nearest <- function(lat, lng, api_version = 5, localhost = F, timeout = 0.001) {
   assertthat::assert_that(api_version %in% c(4,5))
 
   address <- server_address(localhost)
-
+  Sys.sleep(timeout)
   if (api_version == 4) {
     nearest <- nearest_api_v4(lat, lng, address)
   } else {
@@ -61,8 +62,8 @@ nearest <- function(lat, lng, api_version = 5, localhost = F) {
 #' osrmr::quit_server()
 #' Sys.unsetenv("OSRM_PATH_API_4")}
 nearest_api_v4 <- function(lat, lng, address) {
-  nearest <- rjson::fromJSON(file = paste(address, "/nearest?loc=",
-                                        lat, ",", lng, sep = "", NULL))$mapped_coordinate
+  request <- paste(address, "/nearest?loc=", lat, ",", lng, sep = "", NULL)
+  nearest <- make_request(request)$mapped_coordinate
   nearest <- data.frame(
     lat = nearest[1],
     lng = nearest[2]
@@ -90,8 +91,8 @@ nearest_api_v4 <- function(lat, lng, address) {
 #' osrmr::quit_server()
 #' Sys.unsetenv("OSRM_PATH_API_5")}
 nearest_api_v5 <- function(lat, lng, address) {
-  nearest <- rjson::fromJSON(file = paste(address, "/nearest/v1/driving/",
-                                          lng, ",", lat, "?number=1", sep = "", NULL))$waypoints[[1]]$location
+  request <-paste(address, "/nearest/v1/driving/", lng, ",", lat, "?number=1", sep = "", NULL)
+  nearest <- make_request(request)$waypoints[[1]]$location
   nearest <- data.frame(
     lat = nearest[2],
     lng = nearest[1]
