@@ -93,7 +93,7 @@ server_address <- function(use_localhost) {
 #'
 #' @param request A character
 #'
-#' @return A list. The dimension of the list depends on the request and wether the server reacted
+#' @return A list. The dimension of the list depends on the request and whether the server reacted
 #' properly or not.
 make_request <- function(request) {
   R.utils::withTimeout({
@@ -102,13 +102,11 @@ make_request <- function(request) {
         rjson::fromJSON(file = request)
       },
       error = function(cond) {
-        message("Error:  OSRM Server doesn't react. All connections closed manually")
-        closeAllConnections()
+        message("Error:  OSRM Server doesn't react.")
         stop(cond)
       },
       warning = function(cond) {
-        message("Warning: OSRM Server doesn't react. All connections closed manually")
-        closeAllConnections()
+        message("Warning: OSRM Server doesn't react.")
         stop(cond)
       }
     )},

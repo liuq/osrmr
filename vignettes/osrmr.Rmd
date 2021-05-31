@@ -21,8 +21,8 @@ knitr::opts_chunk$set(message = FALSE)
 http://project-osrm.org/) directly from R.  
   
 Many problems with geocoding tasks can be solved in R. Yet, there is no direct routing engine 
-implemented. For such tasks, OSRM is a widely used tool to acces geospacial data and solve 
-routing problems. The 'osrmr' package gives the possiblity to access a basic functionality of OSRM. 
+implemented. For such tasks, OSRM is a widely used tool to access geospacial data and solve 
+routing problems. The 'osrmr' package gives the possibility to access a basic functionality of OSRM. 
 
 ```{r, echo = F, out.width = "690px"}
 knitr::include_graphics("idea_of_osrmr.jpg")
@@ -77,7 +77,7 @@ keep the following points in mind:
  * The onlinehost might sometimes not be available due to maintenance or connection problems. 
  * The onlinehost is slower than the localhost since every calculation represents an individual 
    request to the OSRM server.
- * The localhost is a fixed build which stays the same - so be cautios not to get out of date...
+ * The localhost is a fixed build which stays the same - so be cautious not to get out of date...
  * The localhost is always available.
 
 ### nearest {#nearest}
