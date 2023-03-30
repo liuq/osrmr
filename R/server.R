@@ -74,7 +74,7 @@ quit_server <- function() {
 #' # [1] "http://router.project-osrm.org"
 server_address <- function(use_localhost) {
   if (use_localhost == T) {
-    address <- "http://localhost:5000"
+    address <- "http://localhost:5001"
   } else {
     address <- "http://router.project-osrm.org"
   }
